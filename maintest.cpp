@@ -19,39 +19,30 @@ public:
 	string username = "test";
 	string pin = "pin";
 	string inputtedUserName;
-	string balanceAmount;
-	string depositString;
-	string withdrawString;
-	int addBalance;
-	int pickedNum;
-	int lineRead;
-	int balanceAmountInt;
-	int newBalance;
-	int depositInt;
-	int withdrawInt;
-	int flag;
-	int balanceFlag = 0;
+    string sessionName;
+    int pickedNum;
+
 
 	// ALL FUNCTIONS
 	void openingScreen();
 	void loginInput();
 	void checkInput(string inputtedUserName);
-		int getBalance(string inputtedUserName, int balanceAmountInt, int addBalance);
-	void menuScreen(string inputtedUserName, int balanceAmountInt, int addBalance);
-		void balanceInquiry(string inputtedUserName, int balanceAmountInt, int addBalance);
-		void depositScreen(string inputtedUserName, int balanceAmountInt, int addBalance);
-		void withdrawScreen(string inputtedUserName, int balanceAmountInt, int addBalance);
-		/*void changePinScreen();
-		void transactionHistory();*/
-		void logOutScreen();
+    void setUserName(string inputtedUserName);
+    string getUserName();
+    void setDeposit(int initialBalance);
+    void getDeposit(int currentBalance);
+    void menuScreen();
+	/*int getBalance();
+	
+		void balanceInquiry();
+		void depositScreen();
+		void withdrawScreen();
+		void changePinScreen();
+		void transactionHistory();
+		void logOutScreen();*/
 	void exitScreen();
 
-	userMenu()
-	{
 
-		openingScreen();
-
-	}
 
 };
 
@@ -61,7 +52,8 @@ int main()
 {
 
 	userMenu userObj;
-
+    userObj.openingScreen();
+    
 	return 0;
 
 }
@@ -101,7 +93,6 @@ void userMenu::loginInput()
 	system("cls");
 
 	cout << "Enter username: ";
-
 	cin >> inputtedUserName;
 
 	checkInput(inputtedUserName);
@@ -113,19 +104,18 @@ void userMenu::checkInput(string inputtedUserName)
 
 	system("cls");
 
-	balanceAmountInt = 0;
-
-	addBalance = 0;
 
 	ifstream file(inputtedUserName + ".txt");
 
 	if (file.is_open())
 	{
 
+        userMenu userObj;
 		cout << "Account succesfully logged in." << endl;
 		system("pause");
 		file.close();
-		menuScreen(inputtedUserName, balanceAmountInt, addBalance);
+        userObj.setUserName(inputtedUserName);
+		menuScreen();
 
 	}
 	else 
@@ -135,6 +125,23 @@ void userMenu::checkInput(string inputtedUserName)
 
 }
 
+void userMenu::setUserName(string inputtedUserName)
+{
+
+    sessionName = inputtedUserName;
+
+}
+
+string userMenu::getUserName()
+{
+
+    return sessionName;
+
+}
+
+void userMenu::set
+
+/*
 int userMenu::getBalance(string inputtedUserName, int balanceAmountInt, int addBalance)
 {
 	if (balanceFlag == 0)
@@ -168,9 +175,9 @@ int userMenu::getBalance(string inputtedUserName, int balanceAmountInt, int addB
 
 	return balanceAmountInt;
 
-}
+}*/
 
-void userMenu::menuScreen(string inputtedUserName, int balanceAmountInt, int addBalance)
+void userMenu::menuScreen()
 {
 
 	system("cls");
@@ -199,12 +206,12 @@ void userMenu::menuScreen(string inputtedUserName, int balanceAmountInt, int add
 		case 3:
 			withdrawScreen(inputtedUserName, balanceAmountInt, addBalance);
 			break;
-		/*case 4:
+		case 4:
 			changePinScreen();
 			break;
 		case 5:
 			transactionHistory();
-			break;*/
+			break;
 		case 6:
 			logOutScreen();
 			break;
@@ -281,100 +288,7 @@ void userMenu::depositScreen(string inputtedUserName, int balanceAmountInt, int 
 
 			cout << "Your new balance is: " << balanceAmountInt << " pesos." << endl;
 
-			/*
-			ofstream inputNewBalance;
-			inputNewBalance.open(inputtedUserName + ".txt");
-			inputNewBalance << newBalance;*/
-
-			system("pause");
-
-
-			do
-			{
-				system("cls");
-				cin.ignore();
-				cout << "1. Deposit Again" << endl;
-				cout << "2. Exit Deposit" << endl;
-				cout << "Enter number (1 or 2): ";
-				cin >> pickedNum;
-				
-				switch (pickedNum)
-				{
-					case 1:
-						flag = 1;
-						depositScreen(inputtedUserName, balanceAmountInt, addBalance);
-						break;
-					case 2:
-						flag = 1;
-						menuScreen(inputtedUserName, balanceAmountInt, addBalance);
-						break;
-					default:
-						cout << "Choose from 1 or 2 only. Try again." << endl;
-						cin.ignore();
-						system("pause");
-						break;
-				}
-
-			} while (flag == 0);	
-
-	}
-	else if (flag == 1)
-	{
-		cout << "Input invalid. Try again." << endl;
-		system("pause");
-		depositScreen(inputtedUserName, balanceAmountInt, addBalance);
-	}
-
-}
-
-/*void userMenu::withdrawScreen(string inputtedUserName, int balanceAmountInt, int addBalance)
-{
-
-	system("cls");
-
-	cout << "Enter amount to withdraw: ";
-	cin >> withdrawString;
-
-	for (int i = 0; i < withdrawString.length(); i++)
-	{
-
-		if (isdigit(withdrawString[i]) == false)
-		{
-
-			flag = 1;
-			break;
-
-		}
-		else
-			flag = 0;
-
-	}
-
-	if (flag == 0)
-	{
-		pickedNum = 0;
-
-		flag = 0;
-
-		system("cls");
-
-		withdrawInt = stoi(withdrawString);
-
-		if (withdrawInt <= 499 || withdrawInt % 100 == 0)
-		{
-
-			system("cls");
-			cout << "Deposit must be 500 or higher only. Try Again, hampaslupa." << endl;
-			system("pause");
-			depositScreen(inputtedUserName, balanceAmountInt, addBalance);
 			
-		} else
-
-			balanceAmountInt = getBalance(inputtedUserName, balanceAmountInt, addBalance) + depositInt;
-
-			cout << "Your new balance is: " << balanceAmountInt << " pesos." << endl;
-
-			/*
 			ofstream inputNewBalance;
 			inputNewBalance.open(inputtedUserName + ".txt");
 			inputNewBalance << newBalance;
@@ -418,21 +332,19 @@ void userMenu::depositScreen(string inputtedUserName, int balanceAmountInt, int 
 		depositScreen(inputtedUserName, balanceAmountInt, addBalance);
 	}
 
+}
 
-}*/
-
-void userMenu::logOutScreen()
+void userMenu::withdrawScreen(string inputtedUserName, int balanceAmountInt, int addBalance)
 {
 
-	inputtedUserName = "";
-	balanceAmountInt = 0;
-	pickedNum = 0;
-	lineRead = 0;
-	flag = 0;
-	balanceFlag = 0;
-	openingScreen();
+	system("cls");
+
+	cout << "Enter amount to withdraw: ";
+	cin >> withdrawString;
+
 
 }
+}*/
 
 void userMenu::exitScreen()
 {
@@ -440,5 +352,4 @@ void userMenu::exitScreen()
 	system("cls");
 	cout << "Thank you for using The Bank of BennyShark Commerce!" << endl << endl << endl << endl << endl;
 	exit(0);
-
 }
